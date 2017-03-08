@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Prog3_2017_Chat
+namespace ChatApp
 {
     public class Program
     {

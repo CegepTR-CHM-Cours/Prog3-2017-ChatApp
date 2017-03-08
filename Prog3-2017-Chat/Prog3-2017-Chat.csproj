@@ -1,7 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
+    <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
+    <RootNamespace>ChatApp</RootNamespace>
+    <UserSecretsId>09353c64-feb1-4db1-bcb1-aae82d6d70f0</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/3b2a14fe-1425-4e9d-b55f-c2eba1253b3f/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/Prog3-2017-Chat</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/3b2a14fe-1425-4e9d-b55f-c2eba1253b3f/resourceGroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/Prog3-2017-Chat</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,10 +16,21 @@
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="1.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.1" />
+    <PackageReference Include="ForEvolve.NETCore.Azure" Version="0.0.4-omicron" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="1.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.0" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>

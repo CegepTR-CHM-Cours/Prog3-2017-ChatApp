@@ -7,8 +7,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using ChatApp.Services;
+using ForEvolve.NETCore.Azure.Storage.Table;
+using ChatApp.Models;
 
-namespace Prog3_2017_Chat
+namespace ChatApp
 {
     public class Startup
     {
@@ -19,6 +22,11 @@ namespace Prog3_2017_Chat
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
+
+            if (env.IsDevelopment())
+            {
+                builder.AddUserSecrets();
+            }
             Configuration = builder.Build();
         }
 
@@ -27,6 +35,15 @@ namespace Prog3_2017_Chat
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add ChatApp services
+            services.AddSingleton(new TableStorageRepository<ChatEntryEntity>(new TableStorageSettings
+            {
+                AccountKey = Configuration.GetValue<string>("ChatAppStorage:AccountKey"),
+                AccountName = Configuration.GetValue<string>("ChatAppStorage:AccountName"),
+                TableName = Configuration.GetValue<string>("ChatAppStorage:TableName"),
+            }));
+            services.AddSingleton<IChatService, ChatService>();
+
             // Add framework services.
             services.AddMvc();
         }
