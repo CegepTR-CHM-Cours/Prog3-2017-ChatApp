@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ChatApp.Models;
 using ChatApp.Services;
+using Microsoft.ApplicationInsights;
 
 namespace ChatApp.Controllers
 {
@@ -14,15 +15,18 @@ namespace ChatApp.Controllers
     public class ChatController : Controller
     {
         private readonly IChatService ChatService;
+        private readonly TelemetryClient Telemetry;
 
-        public ChatController(IChatService chatService)
+        public ChatController(IChatService chatService, TelemetryClient telemetry)
         {
             ChatService = chatService ?? throw new ArgumentNullException(nameof(chatService));
+            Telemetry = telemetry ?? throw new ArgumentNullException(nameof(telemetry));
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {
+            Telemetry.TrackEvent("GetAsync");
             var entries = await ChatService.GetAsync();
             return Json(entries.OrderBy(x => x.CreatedDate));
         }
@@ -30,6 +34,7 @@ namespace ChatApp.Controllers
         [HttpGet("from/{loadFrom}")]
         public async Task<IActionResult> GetAsync(DateTime loadFrom)
         {
+            Telemetry.TrackEvent("GetAsync", new Dictionary<string, string> { { "loadFrom", loadFrom.ToString() } });
             var entries = await ChatService.GetAsync();
             return Json(entries
                 .Where(x => x.CreatedDate >= loadFrom)
@@ -39,6 +44,9 @@ namespace ChatApp.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody]CreateChatEntryDto entry)
         {
+            Telemetry.TrackEvent("CreateAsync", new Dictionary<string, string> {
+                { "entry", entry?.ToJson() }
+            });
             if (ModelState.IsValid)
             {
                 try
