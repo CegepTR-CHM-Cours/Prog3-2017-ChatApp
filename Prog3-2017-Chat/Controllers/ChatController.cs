@@ -26,7 +26,10 @@ namespace ChatApp.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {
+            // Telemetry
             Telemetry.TrackEvent("GetAsync");
+
+            // Action
             var entries = await ChatService.GetAsync();
             return Json(entries.OrderBy(x => x.CreatedDate));
         }
@@ -34,19 +37,25 @@ namespace ChatApp.Controllers
         [HttpGet("from/{loadFrom}")]
         public async Task<IActionResult> GetAsync(DateTime loadFrom)
         {
+            // Telemetry
             Telemetry.TrackEvent("GetAsync", new Dictionary<string, string> { { "loadFrom", loadFrom.ToString() } });
+
+            // Action
             var entries = await ChatService.GetAsync();
             return Json(entries
-                .Where(x => x.CreatedDate >= loadFrom)
+                .Where(x => x.CreatedDate > loadFrom)
                 .OrderBy(x => x.CreatedDate));
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody]CreateChatEntryDto entry)
         {
+            // Telemetry
             Telemetry.TrackEvent("CreateAsync", new Dictionary<string, string> {
                 { "entry", entry?.ToJson() }
             });
+
+            // Action
             if (ModelState.IsValid)
             {
                 try

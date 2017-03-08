@@ -52,6 +52,8 @@ namespace ChatApp
             services.AddSingleton<IChatService, ChatService>();
             services.AddSingleton(Telemetry);
 
+            services.AddApplicationInsightsTelemetry();
+
             // Add framework services.
             services.AddMvc();
 
@@ -67,6 +69,9 @@ namespace ChatApp
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            app.UseApplicationInsightsExceptionTelemetry();
+            app.UseApplicationInsightsRequestTelemetry();
 
             // Redirect users to SwaggerUI when they it the application root
             app.MapWhen(context =>
